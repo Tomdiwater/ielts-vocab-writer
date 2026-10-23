@@ -36,31 +36,52 @@ AI 自动生成音标、释义、搭配、词族、词根、辨析，并写入�
 - 补充行（▸ 开头）：9pt 深灰色、左缩进，内容含搭配、词族、词根、辨析
 - 章节标题：13pt 加粗，8 个分类章节
 
-## 安装（给你的 AI Agent 用）
+## 安装
 
 本技能遵循通用的 **SKILL.md 技能格式**，任何支持该格式的 AI Agent 均可使用。
 
-1. 下载或克隆本仓库：
+### 前置条件：Python + python-docx
 
-```bash
-git clone https://github.com/Tomdiwater/ielts-vocab-writer.git
-```
-
-2. 把 `ielts-vocab-writer` 整个文件夹放进你所用 AI 的 skills 目录，常见位置：
-
-| 平台 | 目录 |
-|---|---|
-| 豆包（桌面端） | `…/agent_mode/workspace/.user_skills/` |
-| Claude Code | `~/.claude/skills/`（或项目 `.claude/skills/`） |
-| 其他支持 SKILL.md 的 Agent | 其文档指定的 skills 目录 |
-
-3. 安装 Python 依赖：
+1. 到 https://www.python.org/downloads/ 下载安装 Python（Windows 安装时**务必勾选 `Add Python to PATH`**）
+2. 打开终端（Windows 按 `Win + R` 输入 `powershell`），执行：
 
 ```bash
 pip install python-docx
 ```
 
-4. 重启或刷新 AI 会话，直接发单词即可。AI 会先在桌面生成《雅思阅读词汇.docx》，之后持续往里写。
+### 方式一：豆包桌面端「上传技能」（最简单，推荐）
+
+1. 在本仓库页面点绿色 **`Code` → `Download ZIP`**，下载并解压
+2. 打开豆包桌面端 → 技能管理 → 点右上角 **`+ 添加` → `上传技能`**
+3. 选择下载的 zip 包（或解压后的 `ielts-vocab-writer` 文件夹），等待解析
+4. 确认 Ielts Vocab Writer 开关已打开，直接发一个单词（如 `methane`）测试
+
+### 方式二：手动放入 skills 目录（其他 AI / 进阶）
+
+下载或克隆本仓库：
+
+```bash
+git clone https://github.com/Tomdiwater/ielts-vocab-writer.git
+```
+
+把 `ielts-vocab-writer` 整个文件夹放进你所用 AI 的 skills 目录：
+
+| 平台 | 目录 |
+|---|---|
+| 豆包（桌面端） | `%LOCALAPPDATA%\Doubao\User Data\Default\.doubao\agent_mode\workspace\.user_skills\`（Win+R 粘贴直达） |
+| Claude Code | `~/.claude/skills/`（或项目 `.claude/skills/`） |
+| 其他支持 SKILL.md 的 Agent | 其文档指定的 skills 目录 |
+
+放入后**完全重启 AI 会话**，直接发单词即可。首次使用会在桌面自动生成《雅思阅读词汇.docx》。
+
+### 安装后没反应？
+
+按顺序排查：
+
+1. AI 是否完全重启过（豆包需在右下角托盘图标右键退出）
+2. 技能列表里 Ielts Vocab Writer 开关是否打开
+3. 文件夹是否套了两层：路径必须以 `ielts-vocab-writer/SKILL.md` 结尾，不能再多一层
+4. `python-docx` 是否安装成功（重新执行一次 `pip install python-docx`）
 
 ## 命令行手动使用（不依赖 AI）
 
