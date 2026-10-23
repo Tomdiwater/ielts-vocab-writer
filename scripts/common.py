@@ -5,6 +5,7 @@ ielts-vocab-writer 公共模块
 """
 import os
 import sys
+import json
 import shutil
 from pathlib import Path
 
@@ -44,6 +45,66 @@ def get_desktop_path():
     return str(Path.home() / 'Desktop')
 
 
+# ============ 用户配置（默认路径可永久自定义） ============
+CONFIG_DIR = Path.home() / '.ielts-vocab-writer'
+CONFIG_FILE = CONFIG_DIR / 'config.json'
+
+
+def load_config():
+    """读取用户配置 dict；不存在或损坏时返回 {}"""
+    try:
+        if CONFIG_FILE.exists():
+            with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+
+def save_config(cfg):
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+
+
+def get_default_doc_path():
+    """解析默认文档路径：用户配置优先，否则桌面《雅思阅读词汇.docx》"""
+    p = load_config().get('document_path')
+    if p:
+        return p
+    return os.path.join(get_desktop_path(), DEFAULT_DOC_NAME)
+
+
+def set_default_path(path):
+    """永久保存默认文档路径。path 可以是目录（自动补文件名）或完整 .docx 路径。
+    返回规范化后的完整路径。"""
+    path = os.path.abspath(os.path.expanduser(path))
+    base = os.path.basename(path)
+    # 已存在的目录、或没有文件扩展名的路径，一律视为目录
+    if os.path.isdir(path) or ('.' not in base and not base.endswith('.docx')):
+        path = os.path.join(path, DEFAULT_DOC_NAME)
+    save_config({'document_path': path})
+    return path
+
+
+def reset_default_path():
+    """清除自定义路径，恢复桌面默认。返回恢复后的完整路径。"""
+    try:
+        if CONFIG_FILE.exists():
+            CONFIG_FILE.unlink()
+    except Exception:
+        pass
+    return os.path.join(get_desktop_path(), DEFAULT_DOC_NAME)
+
+
+def is_first_run():
+    """首次使用：没有自定义配置，且桌面默认文档尚不存在"""
+    cfg = load_config()
+    if cfg.get('document_path'):
+        return False
+    return not os.path.exists(os.path.join(get_desktop_path(), DEFAULT_DOC_NAME))
+
+
 def template_path():
     """返回 skill 内置模板路径"""
     return Path(__file__).resolve().parent.parent / 'assets' / 'template.docx'
@@ -61,9 +122,9 @@ def resolve_latest(doc_path):
 
 
 def ensure_document(doc_path=None):
-    """返回应写入的文档路径：默认桌面《雅思阅读词汇.docx》；不存在则从模板初始化"""
+    """返回应写入的文档路径：--document 参数 > 用户配置 > 桌面默认；不存在则从模板初始化"""
     if doc_path is None:
-        doc_path = os.path.join(get_desktop_path(), DEFAULT_DOC_NAME)
+        doc_path = get_default_doc_path()
     actual = resolve_latest(doc_path) if os.path.exists(doc_path) else doc_path
     if not os.path.exists(actual):
         tpl = template_path()

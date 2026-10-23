@@ -12,7 +12,17 @@ ielts-vocab-writer 统一写入入口
   # 3) 直接传 JSON 字符串
   python add.py --json "{\"type\":\"word\",...}"
 
-  # 可选: --document 指定文档路径（默认桌面）
+  # 4) 永久设置默认文档路径（目录或 .docx 路径），并可立即初始化
+  python add.py --set-path "D:\notes" --init
+  python add.py --set-path "D:\notes\我的词汇.docx"
+
+  # 5) 恢复桌面默认
+  python add.py --reset-path
+
+  # 6) 查询当前路径与首次使用状态
+  python add.py --where
+
+  # 可选: --document 指定文档路径（仅本次生效，不修改默认配置）
 
 JSON 字段说明:
   word:    {type:"word", section:"学术", word:"excess",
@@ -34,8 +44,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from docx import Document
 from common import (
+    CONFIG_FILE,
     ensure_document, save_document,
     add_word, add_phrase, add_synonym,
+    set_default_path, reset_default_path,
+    get_default_doc_path, is_first_run,
 )
 
 
@@ -55,11 +68,44 @@ def process_entry(doc, entry):
 
 def main():
     ap = argparse.ArgumentParser(description='雅思阅读词汇录入工具')
-    ap.add_argument('--document', help='目标 .docx 路径（默认桌面《雅思阅读词汇.docx》）')
+    ap.add_argument('--document', help='目标 .docx 路径（仅本次生效；不修改默认配置）')
     ap.add_argument('--input', help='包含词条的 JSON 文件路径')
     ap.add_argument('--json', dest='json_str', help='词条 JSON 字符串（对象或数组）')
     ap.add_argument('--init', action='store_true', help='仅初始化文档，不写入')
+    ap.add_argument('--set-path', dest='set_path',
+                    help='永久设置默认文档路径（目录或 .docx 完整路径），可配合 --init')
+    ap.add_argument('--reset-path', action='store_true',
+                    help='清除自定义路径，恢复为桌面默认')
+    ap.add_argument('--where', action='store_true',
+                    help='显示当前默认路径、是否首次使用、配置文件位置')
     args = ap.parse_args()
+
+    # 查询当前配置（不做任何写入）
+    if args.where:
+        doc_path = get_default_doc_path()
+        print(f'config_file: {CONFIG_FILE}')
+        print(f'first_run: {"true" if is_first_run() else "false"}')
+        print(f'document_path: {doc_path}')
+        print(f'document_exists: {"true" if os.path.exists(doc_path) else "false"}')
+        return
+
+    # 恢复桌面默认
+    if args.reset_path:
+        p = reset_default_path()
+        print(f'[ok] 已恢复默认桌面路径: {p}')
+        if args.init:
+            ensure_document(None)
+            print(f'[ok] 文档已就绪')
+        return
+
+    # 设置永久默认路径
+    if args.set_path:
+        p = set_default_path(args.set_path)
+        print(f'[ok] 默认文档路径已保存: {p}')
+        if args.init:
+            ensure_document(p)
+            print(f'[ok] 文档已就绪: {p}')
+        return
 
     # 初始化/定位文档
     doc_path = ensure_document(args.document)

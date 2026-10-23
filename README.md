@@ -92,12 +92,28 @@ git clone https://github.com/Tomdiwater/ielts-vocab-writer.git
 | Windows | `C:\Users\<你的用户名>\Desktop\雅思阅读词汇.docx` |
 | macOS | `/Users/<你的用户名>/Desktop/雅思阅读词汇.docx` |
 
-说明：
+**第一次使用时，AI 会先问你词汇本要放在哪里**（桌面默认，或你指定的文件夹），经你确认后才会生成文件，不会静默创建。
+
+想永久放到其他位置（如 `D:\notes\`），有两种方式：
+
+- **直接告诉 AI**："以后把词汇写到 `D:\notes`"，AI 会保存你的偏好，之后每次都写入该位置；说"改回桌面"即可恢复。
+- **命令行设置**：
+
+```bash
+python scripts/add.py --set-path "D:\notes" --init   # 永久改为 D:\notes，并立即初始化
+python scripts/add.py --set-path "D:\notes\我的词汇.docx"  # 也可指定完整文件名
+python scripts/add.py --reset-path                   # 恢复桌面默认
+python scripts/add.py --where                        # 查看当前路径和配置文件位置
+```
+
+自定义路径保存在用户目录下的 `~/.ielts-vocab-writer/config.json`（与 skill 文件夹分开，升级/重装 skill 不影响）。
+
+其他说明：
 
 - Windows 下脚本读取注册表定位真实桌面——即使你把桌面改到了 D 盘，或开启了 OneDrive 桌面备份，文件也会出现在你实际看到的那个桌面上，不用手动找盘。
 - 每次写入后，脚本都会在终端输出一行 `[done] 已写入 N 条，文档: <完整路径>`，AI 会把这个路径告诉你。
-- 想放到其他位置（如 `D:\notes\`）：命令行加 `--document "完整路径"`，或直接让 AI 写入你指定的文档。
-- 文档正在 Word 中打开时写入，脚本会自动另存为 `雅思阅读词汇_v2.docx`、`_v3.docx`，路径仍在桌面，不会丢内容。
+- 只想这一次写到别处：加 `--document "完整路径"`（仅本次生效，不改默认）。
+- 文档正在 Word 中打开时写入，脚本会自动另存为 `雅思阅读词汇_v2.docx`、`_v3.docx`，路径不变，不会丢内容。
 
 ## 命令行手动使用（不依赖 AI）
 
