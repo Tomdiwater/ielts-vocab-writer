@@ -1,0 +1,57 @@
+[
+  {
+    "type": "word",
+    "section": "环境",
+    "word": "methane",
+    "phonetic": "/ˈmiːθeɪn/",
+    "pos_meaning": "n. 甲烷，沼气",
+    "supplements": [
+      "methane gas 甲烷气体；methane emissions 甲烷排放",
+      "背景：甲烷是一种温室气体",
+      "greenhouse gas 温室气体"
+    ]
+  },
+  {
+    "type": "word",
+    "section": "学术",
+    "word": "excess",
+    "phonetic": "/ɪkˈses/",
+    "pos_meaning": "n. 过量，过剩；adj. 过量的",
+    "supplements": [
+      "in excess of 超过；excess fat 多余脂肪",
+      "excessive adj. 过度的",
+      "反义词：deficiency n. 不足"
+    ]
+  },
+  {
+    "type": "phrase",
+    "phrase": "take off",
+    "meaning": "（飞机）起飞；脱下；（事业/经济）腾飞",
+    "supplements": [
+      "the plane takes off 飞机起飞；take off your coat 脱下外套",
+      "反义词：land（降落）；put on（穿上）",
+      "take-off n. 起飞；腾飞"
+    ]
+  },
+  {
+    "type": "synonym",
+    "relation": "synonym",
+    "terms": ["be situated in", "be located in"],
+    "meaning": "位于……",
+    "supplements": [
+      "be situated in 位于……（正式，强调地理位置）",
+      "be located in 位于……（常用，强调位置）",
+      "拓展：lie in 位于……"
+    ]
+  },
+  {
+    "type": "synonym",
+    "relation": "antonym",
+    "terms": ["burst", "reduction"],
+    "meaning": "爆发/减少（数据变化反义）",
+    "supplements": [
+      "burst v./n. 爆发，突发（突然增加）",
+      "reduction n. 减少，降低（下降趋势）"
+    ]
+  }
+]
