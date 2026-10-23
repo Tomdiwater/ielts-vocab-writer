@@ -83,6 +83,22 @@ git clone https://github.com/Tomdiwater/ielts-vocab-writer.git
 3. 文件夹是否套了两层：路径必须以 `ielts-vocab-writer/SKILL.md` 结尾，不能再多一层
 4. `python-docx` 是否安装成功（重新执行一次 `pip install python-docx`）
 
+## 生成的文档在哪里？
+
+**默认在你的「桌面」上**，文件名叫 `雅思阅读词汇.docx`：
+
+| 系统 | 完整路径 |
+|---|---|
+| Windows | `C:\Users\<你的用户名>\Desktop\雅思阅读词汇.docx` |
+| macOS | `/Users/<你的用户名>/Desktop/雅思阅读词汇.docx` |
+
+说明：
+
+- Windows 下脚本读取注册表定位真实桌面——即使你把桌面改到了 D 盘，或开启了 OneDrive 桌面备份，文件也会出现在你实际看到的那个桌面上，不用手动找盘。
+- 每次写入后，脚本都会在终端输出一行 `[done] 已写入 N 条，文档: <完整路径>`，AI 会把这个路径告诉你。
+- 想放到其他位置（如 `D:\notes\`）：命令行加 `--document "完整路径"`，或直接让 AI 写入你指定的文档。
+- 文档正在 Word 中打开时写入，脚本会自动另存为 `雅思阅读词汇_v2.docx`、`_v3.docx`，路径仍在桌面，不会丢内容。
+
 ## 命令行手动使用（不依赖 AI）
 
 也可以直接运行脚本，把词条写成 JSON：
