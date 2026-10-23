@@ -1,5 +1,9 @@
 # ielts-vocab-writer
 
+> 作者：**Tomdiwater** ｜ [GitHub 仓库](https://github.com/Tomdiwater/ielts-vocab-writer) ｜ 许可证：[MIT](LICENSE)
+>
+> Copyright © 2026 Tomdiwater（使用、修改、分发均欢迎，保留本版权声明即可）
+
 一个 AI 技能（Skill）：把你背单词时随手发的**单词、短语、同义/反义词组**，自动整理成一份排版统一的 Word 词汇本。首次使用时在桌面生成带分类章节的模板，之后持续追加。
 
 ## 效果
